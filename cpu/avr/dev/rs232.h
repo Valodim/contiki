@@ -33,8 +33,8 @@
  *
  */
 
-#ifndef __RS232_H__
-#define __RS232_H__
+#ifndef RS232_H_
+#define RS232_H_
 
 #include <avr/pgmspace.h>
 #include "contiki-conf.h"
