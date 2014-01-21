@@ -35,9 +35,11 @@
 #include "contiki-raven.h"
 
 #include "contiki.h"
+#ifndef CONTIKI_NO_USB
 #include "usb_drv.h"
 #include "usb_descriptors.h"
 #include "usb_specific_request.h"
+#endif
 #include <util/delay.h>
 #include "bootloader.h"
 

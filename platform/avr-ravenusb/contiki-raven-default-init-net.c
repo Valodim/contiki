@@ -93,6 +93,8 @@ init_net(void)
 	byte_reverse((uint8_t*)&macLongAddr,8);
 	byte_reverse((uint8_t*)&usb_ethernet_addr,6);
 
+#ifndef CONTIKI_NO_USB
 	usb_eth_set_mac_address((uint8_t*)&usb_ethernet_addr);
+#endif
 }
 

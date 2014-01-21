@@ -160,12 +160,14 @@ static inline uint8_t radio_is_ready_to_send_() {
 
 //#define RF230BB_HOOK_RADIO_OFF()	Led1_off()
 //#define RF230BB_HOOK_RADIO_ON()		Led1_on()
+#ifndef CONTIKI_NO_USB
 #define RF230BB_HOOK_TX_PACKET(buffer,total_len) mac_log_802_15_4_tx(buffer,total_len)
 #define RF230BB_HOOK_RX_PACKET(buffer,total_len) mac_log_802_15_4_rx(buffer,total_len)
 #define	RF230BB_HOOK_IS_SEND_ENABLED()	mac_is_send_enabled()
 extern bool mac_is_send_enabled(void);
 extern void mac_log_802_15_4_tx(const uint8_t* buffer, size_t total_len);
 extern void mac_log_802_15_4_rx(const uint8_t* buffer, size_t total_len);
+#endif
 
 
 /* ************************************************************************** */

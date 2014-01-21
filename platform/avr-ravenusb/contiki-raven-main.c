@@ -74,7 +74,11 @@
 #define PRINTA(...)
 #endif
 
+/* skip all of this if no usb is to be configured! */
+#ifndef CONTIKI_NO_USB
 #include "usb_task.h"
+#endif
+
 #if USB_CONF_SERIAL
 #include "cdc_task.h"
 #endif
@@ -88,7 +92,10 @@
 #endif
 
 #include "dev/watchdog.h"
+
+#ifndef CONTIKI_NO_USB
 #include "dev/usb/usb_drv.h"
+#endif
 
 #if JACKDAW_CONF_USE_SETTINGS
 #include "settings.h"
@@ -453,6 +460,8 @@ uint16_t p=(uint16_t)&__bss_end;
   process_start(&etimer_process, NULL);
 
   Led2_on();
+
+#ifndef CONTIKI_NO_USB
   /* Now we can start USB enumeration */
   process_start(&usb_process, NULL);
 
@@ -470,6 +479,7 @@ uint16_t p=(uint16_t)&__bss_end;
   PRINTA("\n\n*******Booting %s*******\n",CONTIKI_VERSION_STRING);
 #endif
 }
+#endif
 #endif
   if (!stdout) Led3_on();
   
@@ -556,7 +566,9 @@ uint16_t p=(uint16_t)&__bss_end;
 #endif /* RF230BB */
 
   /* Start ethernet network and storage process */
+#ifndef CONTIKI_NO_USB
   process_start(&usb_eth_process, NULL);
+#endif
 #if USB_CONF_STORAGE
   process_start(&storage_process, NULL);
 #endif

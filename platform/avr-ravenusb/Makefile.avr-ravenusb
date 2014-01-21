@@ -4,7 +4,9 @@ CONTIKI_TARGET_MAIN = ${CONTIKI_CORE}.o
 
 BOOTLOADER_START = 0x1F000
 
-#USB Ethernet Interface + USB Serial Port TX Only
+ifndef CONTIKI_NO_USB
+
+# USB Ethernet Interface + USB Serial Port TX Only
 USB       = uart_usb_lib.c   \
             cdc_task.c       \
             rndis_task.c      \
@@ -20,6 +22,14 @@ USB       = uart_usb_lib.c   \
 #Files needed for USB Mass storage device enumeration
 USB +=       scsi_decoder.c ctrl_access.c storage_task.c avr_flash.c
 
+# Files needed for sicslow <-> ethernet interoperability
+USB +=       sicslow_ethernet.c
+
+else
+# otherwise, set flag to skip usb stuff
+CONTIKI_PLAT_DEFS += -DCONTIKI_NO_USB
+endif
+
 #As of September 2010 the following are needed for rpl. They need explicit inclusion if CONTIKI_NO_NET=1
 #If CONTIKI_NO_NET=1 the tcpip_input routine in tcpip.c must be commented out; it expects a tcpip process and conflicts with the one in fakeuip.c
 #RPL      = rpl.c rpl-dag.c rpl-icmp6.c rpl-timers.c rpl-mrhof.c uip-ds6.c uip-icmp6.c uip-nd6.c uip6.c neighbor-info.c neighbor-attr.c tcpip.c uip-split.c psock.c
@@ -27,7 +37,7 @@ USB +=       scsi_decoder.c ctrl_access.c storage_task.c avr_flash.c
 CONTIKI_TARGET_SOURCEFILES +=   cfs-eeprom.c eeprom.c random.c \
                                 mmem.c contiki-raven-default-init-lowlevel.c \
                                 contiki-raven-default-init-net.c contiki-raven-main.c httpd-simple-avr.c \
-                                sicslow_ethernet.c queuebuf.c packetbuf.c rng.c \
+                                queuebuf.c packetbuf.c rng.c \
                 $(RPL) \
                 $(USB)
 
@@ -36,7 +46,7 @@ USB_INCLUDES = -I$(CONTIKI_CPU)/dev/usb
 CONTIKIAVR=$(CONTIKI)/cpu/avr
 CONTIKIBOARD=.
 
-CONTIKI_PLAT_DEFS = -DF_CPU=8000000UL -DAVRGCC -DAUTO_CRC_PADDING=2 -DJACKDAW=1
+CONTIKI_PLAT_DEFS += -DF_CPU=8000000UL -DAVRGCC -DAUTO_CRC_PADDING=2 -DJACKDAW=1
 
 #The no-net build using fakeuip.c is always ipv6
 ifdef CONTIKI_NO_NET
