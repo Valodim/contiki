@@ -598,8 +598,8 @@ int
 main(void)
 {
   /* GCC depends on register r1 set to 0 (?) */
-  asm volatile ("clr r1");
-  
+ __asm__ volatile ("clr r1");
+
   /* Initialize in a subroutine to maximize stack space */
   initialize();
 
